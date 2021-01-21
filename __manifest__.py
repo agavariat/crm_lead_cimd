@@ -3,9 +3,9 @@
 {
     "name": "form in leads",
     "summary": "Add forms to leads",
-    "version": "12.0.1.0.0",
+    "version": "12",
     "category": "Customer Relationship Management",
-    "website": "https://github.com/OCA/crm",
+    "website": "https://intresco.co",
     "author": "intresco,Andres Gaviria",
     "license": "AGPL-3",
     "application": False,
