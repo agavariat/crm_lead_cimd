@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+   <record id="crm_case_form_view_oppor_inherit_product" model="ir.ui.view">
+        <field name="name">crm.lead.oppor.inherited</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form" />
+        <field name="arch" type="xml">
+
+        	 <xpath expr="//group/group[5]" position="replace">
+        	 	<group>
+                                <field name="user_id" domain="[('share', '=', False)]" string="Facilitador"
+                                    context="{'default_groups_ref': ['base.group_user', 'base.group_partner_manager', 'sales_team.group_sale_salesman_all_leads'], 'team_id': team_id}"/>
+                                <field name="team_id" widget="selection"
+                                    domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                                <field name="type" invisible="1"/>
+                            </group>
+
+                
+
+                </xpath>
+                
+
+            <xpath expr="//group/group[2]" position="replace">
+            <group attrs="{'invisible': [('type', '=', 'lead')]}">
+                                <field name="partner_id"
+                                    widget="res_partner_many2one"
+                                    string="Propietario"
+                                    context="{'res_partner_search_mode': type == 'opportunity' and 'customer' or False,
+                                        'default_name': x_nombre or x_nombre_negocio,
+                                        'default_street': street,
+                                        'default_is_company': type == 'opportunity' and contact_name == False,
+                                        'default_company_name': type == 'opportunity' and partner_name,
+                                        'default_street2': street2,
+                                        'default_city': city,
+                                        'default_title': title,
+                                        'default_state_id': state_id,
+                                        'default_zip': zip,
+                                        'default_country_id': country_id,
+                                        'default_function': function,
+                                        'default_phone': phone,
+                                        'default_mobile': mobile,
+                                        'default_email': email_from,
+                                        
+                                        'default_team_id': team_id,
+                                        'default_doctype': doctype,
+                                        
+                                        'default_x_sexo': x_sexo,
+                                        'default_x_etnia': x_etnia,
+                                        'default_x_edad': x_edad,
+                                        'default_x_limitacion': x_limitacion,
+                                        'default_x_escolaridad': x_escolaridad,
+                                        'default_x_grupos': x_grupos,
+                                        'default_x_grupos_cual': x_grupos_cual,
+                                        'default_x_estrato': x_estrato,
+                                        'default_x_situacion': x_situacion,
+                                        'default_x_vereda': x_vereda,
+                                        'default_x_datos1': x_datos1,
+                                        'default_x_sector': x_sector,
+                                        'default_x_ubic': x_ubic,
+                                        'default_x_com_cuenta': x_com_cuenta,
+                                        'default_x_cont1': x_cont1,
+                                        'default_x_datos3': x_datos3,
+                                        'default_x_actcomer': x_actcomer,
+                                        'default_x_nombre': x_nombre,
+                                        'default_x_nombre_negocio': x_nombre_negocio,
+                                        'show_vat': True,
+                                    }"
+                                />
+                                <field name="is_blacklisted" invisible="1"/>
+                                <field name="partner_is_blacklisted" invisible="1"/>
+                                <field name="email_state" invisible="1"/>
+                                <field name="phone_state" invisible="1"/>
+                                <label for="email_from" class="oe_inline"/>
+                                <div class="o_row o_row_readonly">
+                                    <i class="fa fa-ban" style="color: red;" role="img" title="This email is blacklisted for mass mailing"
+                                        aria-label="Blacklisted" attrs="{'invisible': ['|', ('is_blacklisted', '=', False), ('partner_address_email', '!=', False)]}" groups="base.group_user"/>
+                                    <field name="email_from"
+                                        attrs="{'invisible': [('partner_address_email', '!=', False)]}" string="Email" widget="email"/>
+                                    <i class="fa fa-ban" style="color: red;" role="img" title="This email is blacklisted for mass mailing"
+                                        aria-label="Blacklisted" attrs="{'invisible': ['|', ('partner_is_blacklisted', '=', False), ('partner_address_email', '=', False)]}" groups="base.group_user"/>
+                                    <field name="partner_address_email"
+                                        attrs="{'invisible': [('partner_address_email', '==', False)]}" widget="email" string="Email"/>
+                                </div>
+                                <field string="Phone"
+                                    name="partner_address_phone"
+                                    widget="phone" options="{'enable_sms': True}"
+                                    readonly="1"
+                                    attrs="{'invisible': [('partner_address_phone', '==', False)]}"/>
+                                <field name="mobile" string="Teléfono Celular"
+                                    widget="phone" options="{'enable_sms': True}"
+                                    attrs="{'invisible':  [('partner_address_phone', '!=', False)]}"/>
+                            </group>
+                      </xpath>
+
+
+            <!-- Reemplazar la Pestaña de CRM por la encuenta de Registro -->
+
+            <xpath expr="//page[@name='lead']" position="replace">
+                <page string="Módulo 1">
+                    <group>
+                        <field name="x_datos1" />
+                    </group>
+                    <group string="MÓDULO 1 - REGISTRO" style="line-height: 25px;">
+                        <group>
+                            <field name="x_nombre_negocio" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_nombre" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>                
+                            <field name="doctype" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_identification" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_sexo" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_etnia" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_edad" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                             <field name="country_id" attrs=
+                              "{'invisible': ['|','|',('x_datos1','=','51'),('x_datos1','=',False),('x_datos1','=','50')]}"/>
+                            <field name="state_id" string="8. Departamento de Residencia" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="xcity" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_vereda" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="mobile" string="11. Teléfono Celular" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="email_from"  string="12. Correo electronico" attrs="{'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_limitacion" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_escolaridad" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <!--field name="x_cual"
+                                   options="{'no_open': False}"
+                                   attrs="{
+                                   'invisible':[('x_escolaridad', '!=', '34')],}"        
+                                   />
+                            <field name="x_cual"
+                                   options="{'no_open': False}"
+                                   attrs="{
+                                   'invisible':[('x_escolaridad', '!=', '35')],}"        
+                                   />
+                            <field name="x_cual"
+                                   options="{'no_open': False}"
+                                   attrs="{
+                                   'invisible':[('x_escolaridad', '!=', '36')],}"        
+                                   /-->
+                        </group>
+
+                        <group>                            
+                            <field name="x_grupos" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_grupos_cual"
+                                   attrs="{
+                                   'invisible':[('x_grupos', '!=', '40')],'required': [('x_datos1','=','50'),('x_grupos', '=', '40')]}"        
+                                   />
+                            <field name="x_estrato" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_situacion" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_sector" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_actcomer" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_state_id" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_city_id" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_ubic" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                            <field name="x_com_cuenta" attrs=
+                              "{'required': [('x_datos1','=','50')], 'invisible': ['|',('x_datos1','=','51'),('x_datos1','=',False)]}"/>
+                        </group>
+                    </group>
+
+                   
+                </page>
+
+                <page string="Módulo 2">
+
+                 <group string="MÓDULO 2 - PARTICIPACIÓN">
+                       <field name="x_cont1" />              
+                    </group>
+                </page>
+
+                <page string="Módulo 3">
+                    <group> 
+                        <field name="x_datos3" />
+                    </group>
+                    <group string="CARACTERIZACIÓN " style="line-height: 25px;">
+                       
+                    <group>
+                    <field name="x_microneg"  attrs=
+                              "{'required': [('x_datos3','=','50')], 
+                              'invisible': [('x_datos3','!=','50')]}"/>
+
+                    <field name="x_sisben" attrs=
+                              "{'required': ['|',('x_microneg','=','50'),('x_microneg','=','51')], 
+                              'invisible': [('x_microneg','=',False)]}"/>
+                    
+                    <field name="x_tsisben" attrs=
+                              "{'required': [('x_sisben','=','50'),], 
+                              'invisible': ['|',('x_sisben','!=','50'),('x_microneg','=',False)]}"/>
+                    
+                    <field name="x_nsisben" attrs=
+                              "{'required': [('x_sisben','=','50')], 
+                              'invisible': ['|',('x_sisben','!=','50'),('x_microneg','=',False)]}"/>
+
+                    <field name="x_estrato_neg" attrs=
+                              "{'required': ['|',('x_microneg','=','50'),('x_microneg','=','51')], 
+                              'invisible': [('x_microneg','=',False)]}"/>
+
+                    <field name="x_tactiv" attrs=
+                              "{'required': ['|',('x_microneg','=','50'),('x_microneg','=','51')], 
+                              'invisible': [('x_microneg','=',False)]}"/>
+
+                    <field name="x_dias_sem_inf" attrs=
+                              "{'required': [('x_microneg','=','51')], 
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_dias_sem_for" attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+                              
+                    <field name="x_dias_sem_for2" attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_horas_trab_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_horas_trab_form" attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_trabajadores_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_trabajadores_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_cotiza_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_cotiza_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_recursos_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_recursos_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_recursos_cual_inf" attrs=
+                              "{'required': [('x_recursos_inf','=','56'),], 
+                              'invisible': ['|',('x_recursos_inf','!=','56'),('x_microneg','!=','51')]}"/>
+                    <field name="x_recursos_cual_form" attrs=
+                              "{'required': [('x_recursos_form','=','56'),], 
+                              'invisible': ['|',('x_recursos_form','!=','56'),('x_microneg','!=','50')]}"/>
+
+
+                    </group>
+
+                    <group>
+
+                    <field name="x_motivo_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_motivo_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_motivo_cual_inf" attrs=
+                              "{'required': [('x_motivo_inf','=','56'),], 
+                              'invisible': ['|',('x_motivo_inf','!=','56'),('x_microneg','!=','51')]}"/>
+                    <field name="x_motivo_cual_form" attrs=
+                              "{'required': [('x_motivo_form','=','57'),], 
+                              'invisible': ['|',('x_motivo_form','!=','57'),('x_microneg','!=','50')]}"/>
+
+                    <field name="x_sitio_ubi_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_sitio_ubi_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_sitio_ubi_cual_inf" attrs=
+                              "{'required': [('x_sitio_ubi_inf','=','55'),], 
+                              'invisible': ['|',('x_sitio_ubi_inf','!=','55'),('x_microneg','!=','51')]}"/>
+                    <field name="x_sitio_ubi_cual_form" attrs=
+                              "{'required': [('x_sitio_ubi_form','=','54'),], 
+                              'invisible': ['|',('x_sitio_ubi_form','!=','54'),('x_microneg','!=','50')]}"/>
+
+                    <field name="x_desc_act_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_desc_act_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+                    
+                    <field name="x_desc_act_sec_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_desc_act_sec_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_ambula_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+
+                    <field name="x_ambula_2_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+
+                    <field name="x_mprima_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_mprima_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_clientes_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_clientes_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_problema_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_problema_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_prob_desc_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_prob_desc_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    <field name="x_reinvierte_inf" attrs=
+                              "{'required': [('x_microneg','=','51')],
+                              'invisible': [('x_microneg','!=','51')]}"/>
+                    <field name="x_reinvierte_form"  attrs=
+                              "{'required': [('x_microneg','=','50')], 
+                              'invisible': [('x_microneg','!=','50')]}"/>
+
+                    </group>
+
+                    </group> 
+
+                    <group string="PROTOCOLOS DE BIOSEGURIDAD" style="line-height: 25px;">
+                      <group>
+                        <field name="x_dcont1" attrs=
+                              "{'invisible': [('x_datos3','!=','50')]}"/>
+                      </group>
+                      <group>
+                      </group>
+
+                      <group>
+                        <field name="x_proto1"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto2"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto3"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto4"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto5"  attrs=
+                              "{'required': [('x_proto4','!=','51'),('x_dcont1','=',True)], 
+                              'invisible': ['|',('x_proto4','=','51'),('x_dcont1','=',False)]}"/>
+                        <field name="x_proto6"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto7"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto8"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto9"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        
+                      </group>
+
+                      <group>
+                        <field name="x_proto10"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto11"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto12"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto13"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto14"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto15"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto16"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto17"  attrs=
+                              "{'required': [('x_dcont1','=',True)], 
+                              'invisible': [('x_dcont1','=',False)]}"/>
+                        <field name="x_proto18"  attrs=
+                              "{'required': [('x_proto17','!=','51'),('x_dcont1','=',True)], 
+                              'invisible': ['|',('x_proto17','=','51'),('x_dcont1','=',False)]}"/>
+                      
+                      </group>
+
+                    </group>
+
+                    <group string="INNOVACION DEL MODELO DE NEGOCIO" style="line-height: 25px;">
+                      <group>
+                        <field name="x_dcont2" attrs=
+                              "{'invisible': [('x_datos3','!=','50')]}"/>
+                      </group>
+                      <group>
+                      </group>
+
+                      <group>
+                        <field name="x_innova19"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova20"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova21"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova22"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova23"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova24"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova25"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova26"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova27"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova28"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova29"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova30"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova31"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        
+                      </group>
+
+                      <group>
+                        <field name="x_innova32"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova33"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova34"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova35"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova36"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova37"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova38"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova39"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova39"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+                        <field name="x_innova40"  attrs=
+                              "{'required': [('x_dcont2','=',True)], 
+                              'invisible': [('x_dcont2','=',False)]}"/>
+
+                        <field name="x_innova41_inf" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','50')]}"/>
+                        <field name="x_innova41_form" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_innova42_inf" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','50')]}"/>
+                        <field name="x_innova42_form" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','51')]}"/>
+                        
+                        <field name="x_innova43_inf" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','50')]}"/>
+                        <field name="x_innova43_form" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','51')]}"/>
+                         
+                        <field name="x_innova44_inf" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','50')]}"/>
+                        <field name="x_innova44_form" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','51')]}"/>
+                        
+                        <field name="x_innova45_form" attrs=
+                              "{'required': [('x_dcont2','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont2','=',False),('x_microneg','=','51')]}"/>
+                            
+                      </group>
+
+                    </group>
+
+                    <group string="FORMALIZACION SECCION 3: ADMINISTRACION" style="line-height: 25px;">
+                      <group>
+                        <field name="x_dcont3" attrs=
+                              "{'invisible': [('x_datos3','!=','50')]}"/>
+                      </group>
+                      <group>
+                      </group>
+
+                      <group>
+                        <field name="x_forma45_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma46_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma46_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma47_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma47_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma48_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma48_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma49_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma49_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma50_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma50_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma51_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma51_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_forma50_inf','=','50'),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_forma50_inf','!=','50'),('x_dcont3','=',False)]}"/>
+
+                        <field name="x_forma52_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma52_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma53_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_forma56_form','!=','50'),('x_dcont3','=',False)]}"/>
+
+                        <field name="x_forma53_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_forma52_inf','!=','50'),('x_dcont3','=',False)]}"/>
+                        <field name="x_forma54_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma54_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma55_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_forma54_form','!=','50'),('x_dcont3','=',False)]}"/>
+                        <field name="x_forma55_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+                        
+
+                        <field name="x_forma56_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma56_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+                        
+
+                        <field name="x_forma57_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma57_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_forma56_inf','!=','50'),('x_dcont3','=',False)]}"/>
+                        
+                        
+                        <field name="x_forma58_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma58_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma59_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma59_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+                        
+                      </group>
+
+                      <group>
+                        <field name="x_forma60_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma60_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        
+
+                        <field name="x_forma61_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma61_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma62_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma62_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+                        
+
+                        <field name="x_forma63_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma63_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma64_form" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma64_inf"  attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','50')]}"/>
+
+                        <field name="x_forma65_inf" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma66_inf" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+
+                        <field name="x_forma67_inf" attrs=
+                              "{'required': [('x_dcont3','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont3','=',False),('x_microneg','=','51')]}"/>
+                            
+                      </group>
+
+                      <group string="MERCADEO Y COMERCIALIZACION SECCION 4: MERCADEO Y VENTAS" style="line-height: 25px;">
+                      </group>
+                      <group>
+                      </group>
+                      
+                      <group>
+                      <field name="x_dcont4" attrs=
+                              "{'invisible': [('x_datos3','!=','50')]}"/>
+                      </group>
+                        <group>
+                      </group>
+
+                      <group>
+                      <!--field name="x_dcont4" attrs=
+                              "{'invisible': [('x_datos3','!=','50')]}"/-->
+
+                        <field name="x_merc65_form" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','51')]}"/>
+
+                              <field name="x_merc68_inf" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','50')]}"/> 
+
+                              <field name="x_merc66_form" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','51')]}"/>
+
+                              <field name="x_merc69_inf" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','50')]}"/>
+
+                              <field name="x_merc67_form" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','51')]}"/>
+
+                              <field name="x_merc70_inf" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','50')]}"/> 
+
+                              <field name="x_merc68_form" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','51')]}"/>
+
+                              <field name="x_merc71_inf" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','50')]}"/> 
+
+                              <field name="x_merc69_form" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','50')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','51')]}"/>
+
+                              <field name="x_merc72_inf" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','50')]}"/> 
+
+                      </group>
+                        <!--field name="x_dcont4" attrs=
+                              "{'invisible': [('x_datos3','!=','50')]}"/-->
+                      <group>
+                        <!-- //////////////////////////-->
+                        <!--field name="x_merc69_inf" attrs=
+                              "{'required': [('x_dcont4','=',True),('x_microneg','=','51')], 
+                              'invisible': ['|',('x_dcont4','=',False),('x_microneg','=','50')]}"/-->
+                        
+
+                               
+                      </group>
+
+                      <group>
+                        <!-- //////////////////////////-->
+                            
+                      </group>
+                        
+                        
+
+                      
+                      </group>
+
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_search_crm_inherited" model="ir.ui.view">
+            <field name="name">Search - extension</field>
+                <field name="model">crm.lead</field>
+                <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+                <field name="arch" type="xml">
+                    <field name="name" position="replace">
+                       <field name="name" string="Propietario" filter_domain="[
+                        '|', '|', '|', '|',
+                        ('partner_id', 'ilike', self),
+                        ('x_nombre_negocio', 'ilike', self),
+                        ('email_from', 'ilike', self),
+                        ('name', 'ilike', self),
+                        ('x_identification', 'ilike', self)]"/>
+                    </field>
+
+                    <filter name="salesperson" position="replace">
+                      <filter string="Facilitador" name="salesperson" context="{'group_by':'user_id'}"/>
+                    </filter>
+                    <filter name="saleschannel" position="replace">
+                    	<filter string="NRC" name="saleschannel" context="{'group_by':'team_id'}"/>
+                	</filter>
+                  <filter name="assigned_to_me" position="replace">
+                      <filter string="Propietarios Asignados" name="assigned_to_me"
+                        domain="[('user_id', '=', uid)]"
+                        help="Opportunities that are assigned to me"/>
+                  </filter>
+            </field>
+    </record>
+
+</odoo>
